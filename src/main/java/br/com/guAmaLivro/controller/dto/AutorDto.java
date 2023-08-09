@@ -1,9 +1,9 @@
-package Dto;
+package br.com.guAmaLivro.controller.dto;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import Model.AutorModel;
+import br.com.guAmaLivro.model.AutorModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

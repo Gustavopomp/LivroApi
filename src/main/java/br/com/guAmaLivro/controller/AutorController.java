@@ -1,4 +1,4 @@
-package Controller;
+package br.com.guAmaLivro.controller;
 
 import java.net.URI;
 import java.util.List;
@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import Dto.AutorDto;
-import Dto.LivroDto;
-import Form.AutorForm;
-import Form.LivroForm;
-import Model.AutorModel;
-import Model.LivroModel;
-import Repository.AutorRepository;
+import br.com.guAmaLivro.controller.dto.AutorDto;
+import br.com.guAmaLivro.controller.dto.LivroDto;
+import br.com.guAmaLivro.form.AutorForm;
+import br.com.guAmaLivro.form.LivroForm;
+import br.com.guAmaLivro.model.AutorModel;
+import br.com.guAmaLivro.model.LivroModel;
+import br.com.guAmaLivro.repository.AutorRepository;
 import jakarta.transaction.Transactional;
 
 @RestController

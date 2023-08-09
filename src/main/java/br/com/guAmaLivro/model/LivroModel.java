@@ -1,4 +1,4 @@
-package Model;
+package br.com.guAmaLivro.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

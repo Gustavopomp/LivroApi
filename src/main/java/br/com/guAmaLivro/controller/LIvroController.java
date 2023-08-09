@@ -1,4 +1,4 @@
-package Controller;
+package br.com.guAmaLivro.controller;
 
 import java.net.URI;
 import java.util.List;
@@ -16,46 +16,47 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import Dto.AssuntoDto;
-import Dto.LivroDto;
-import Form.AssuntoForm;
-import Form.LivroForm;
-import Model.AssuntoModel;
-import Model.LivroModel;
-import Repository.AssuntoRepository;
-import Repository.LivroRepository;
+import br.com.guAmaLivro.controller.dto.LivroDto;
+import br.com.guAmaLivro.form.LivroForm;
+import br.com.guAmaLivro.model.LivroModel;
+import br.com.guAmaLivro.repository.LivroRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/assunto")
-public class AssuntoController {
+@RequestMapping("/livro")
+public class LIvroController {
 	@Autowired
-	AssuntoRepository assuntoRepository;
+	LivroRepository livrorepository;
 
 	@PostMapping(produces = { "application/json", "application/xml", "application/x-yaml" }, consumes = {
 			"application/json", "application/xml", "application/x-yaml" })
 	@Transactional
-	public ResponseEntity<AssuntoDto> PublicarLivro(@RequestBody AssuntoForm form, UriComponentsBuilder UriBuilder) {
-		AssuntoModel lm = form.convert();
-		assuntoRepository.save(lm);
+	public ResponseEntity<LivroDto> PublicarLivro(@RequestBody @Valid LivroForm form, UriComponentsBuilder UriBuilder) {
+		LivroModel lm = form.convert();
+		livrorepository.save(lm);
 
-		URI uri = UriBuilder.path("/assunto/id").buildAndExpand(lm.getId()).toUri();
-		return ResponseEntity.created(uri).body(new AssuntoDto(lm));
+		URI uri = UriBuilder.path("/livro/id").buildAndExpand(lm.getId()).toUri();
+		return ResponseEntity.created(uri).body(new LivroDto(lm));
 	}
 
 	@GetMapping(produces = { "application/json" })
-	public List<AssuntoDto> BuscarLivro() {
-
-		List<AssuntoModel> lm = assuntoRepository.findAll();
-		return AssuntoDto.convert(lm);
+	public List<LivroDto> BuscarLivro(Integer edicao) {
+		if (edicao == null) {
+			List<LivroModel> lm = livrorepository.findAll();
+			return LivroDto.convert(lm);
+		} else {
+			List<LivroModel> lm = livrorepository.findByEdicao(edicao);
+			return LivroDto.convert(lm);
+		}
 	}
 
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<AssuntoDto> AtualizarLivro(@RequestBody AssuntoForm form, @PathVariable Long id) {
-		Optional<AssuntoModel> op = assuntoRepository.findById(id);
+	public ResponseEntity<LivroDto> AtualizarLivro(@RequestBody LivroForm form, @PathVariable Long id) {
+		Optional<LivroModel> op = livrorepository.findById(id);
 		if (op.isPresent()) {
-			AssuntoModel lm = form.atualizar(id, assuntoRepository);
+			LivroModel lm = form.atualizar(id, livrorepository);
 			return ResponseEntity.ok().build();
 		} else {
 			return ResponseEntity.notFound().build();
@@ -64,10 +65,10 @@ public class AssuntoController {
 
 	@DeleteMapping("/{id}")
 	@Transactional
-	public ResponseEntity<AssuntoDto> DeletarLivro(@PathVariable Long id) {
-		Optional<AssuntoModel> op = assuntoRepository.findById(id);
+	public ResponseEntity<LivroDto> DeletarLivro(@PathVariable Long id) {
+		Optional<LivroModel> op = livrorepository.findById(id);
 		if (op.isPresent()) {
-			assuntoRepository.deleteById(id);
+			livrorepository.deleteById(id);
 			return ResponseEntity.ok().build();
 		}
 		return ResponseEntity.notFound().build();

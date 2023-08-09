@@ -1,8 +1,8 @@
-package Form;
+package br.com.guAmaLivro.form;
 
-import Model.AutorModel;
-import Model.LivroModel;
-import Repository.AutorRepository;
+import br.com.guAmaLivro.model.AutorModel;
+import br.com.guAmaLivro.model.LivroModel;
+import br.com.guAmaLivro.repository.AutorRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

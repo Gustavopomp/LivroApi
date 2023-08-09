@@ -1,4 +1,4 @@
-package Model;
+package br.com.guAmaLivro.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,25 +12,28 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class AutorModel {
+public class AssuntoModel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	private String nome;
-	public AutorModel(String nome) {
+	private String descricao;
+
+	public AssuntoModel(String descricao) {
 		super();
-		this.nome = nome;
+		this.descricao = descricao;
 	}
+
 	public long getId() {
 		return id;
 	}
-	public String getNome() {
-		return nome;
-	}
-	public void setNome(String nome) {
-		this.nome = nome;
+
+	public String getDescricao() {
+		return descricao;
 	}
 
-	
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
 }

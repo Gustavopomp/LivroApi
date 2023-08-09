@@ -1,9 +1,9 @@
-package Dto;
+package br.com.guAmaLivro.controller.dto;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import Model.LivroModel;
+import br.com.guAmaLivro.model.LivroModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,10 +19,10 @@ public class LivroDto {
 	private String anoDePublicacao;
 
 	public LivroDto(LivroModel lm) {
-		this.titulo = titulo;
-		this.editora = editora;
-		this.edicao = edicao;
-		this.anoDePublicacao = anoDePublicacao;
+		this.titulo = lm.getTitulo();
+		this.editora = lm.getEditora();
+		this.edicao = lm.getEdicao();
+		this.anoDePublicacao = lm.getAnoDePublicacao();
 	}
 
 	public static List<LivroDto> convert(List<LivroModel> lm) {
