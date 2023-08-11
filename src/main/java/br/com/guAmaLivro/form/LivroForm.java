@@ -1,5 +1,7 @@
 package br.com.guAmaLivro.form;
 
+import org.hibernate.validator.constraints.Length;
+
 import br.com.guAmaLivro.model.LivroModel;
 import br.com.guAmaLivro.repository.LivroRepository;
 import jakarta.validation.constraints.NotBlank;
@@ -17,14 +19,14 @@ public class LivroForm {
 	@NotBlank
 	@NotEmpty
 	private String titulo;
-	@NotBlank
 	@NotEmpty
+	@NotBlank
 	private String editora;
 	@NotNull
-	@NotEmpty
 	private int edicao;
-	@NotBlank
 	@NotEmpty
+	@NotBlank
+	@Length(min =4 ,max = 4)
 	private String anoDePublicacao;
 
 	public LivroModel convert() {
