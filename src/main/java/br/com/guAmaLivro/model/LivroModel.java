@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 
 
 @Entity
+@Data
+@AllArgsConstructor
 public class LivroModel {
 
 	@Id
@@ -62,6 +64,9 @@ public class LivroModel {
 
 	public void setAnoDePublicacao(String anoDePublicacao) {
 		this.anoDePublicacao = anoDePublicacao;
+	}
+
+	public LivroModel() {
 	}
 
 }

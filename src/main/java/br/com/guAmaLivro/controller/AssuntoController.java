@@ -27,7 +27,7 @@ import br.com.guAmaLivro.repository.LivroRepository;
 import jakarta.transaction.Transactional;
 
 @RestController
-@RequestMapping("/assunto")
+@RequestMapping("/api/assunto/v1")
 public class AssuntoController {
 	@Autowired
 	AssuntoRepository assuntoRepository;

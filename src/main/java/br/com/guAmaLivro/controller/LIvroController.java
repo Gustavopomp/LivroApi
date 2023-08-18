@@ -20,57 +20,105 @@ import br.com.guAmaLivro.controller.dto.LivroDto;
 import br.com.guAmaLivro.form.LivroForm;
 import br.com.guAmaLivro.model.LivroModel;
 import br.com.guAmaLivro.repository.LivroRepository;
+import br.com.guAmaLivro.service.LivroService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/livro")
+@RequestMapping("/api/livro/v1")
 public class LIvroController {
 	@Autowired
 	LivroRepository livrorepository;
 
-	@PostMapping(produces = { "application/json", "application/xml", "application/x-yaml" }, consumes = {
-			"application/json", "application/xml", "application/x-yaml" })
+	@Autowired
+	LivroService service;
+
+	@PostMapping
+	@Operation(summary = "Adds a new Book",
+			description = "Adds a new Book by passing in a JSON, XML or YML representation of the Book!",
+			tags = {"Book"},
+			responses = {
+				@ApiResponse(description = "Success", responseCode = "200",
+					content = @Content(schema = @Schema(implementation = LivroDto.class))
+				),
+				@ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+				@ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+				@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
+			}
+		)
 	@Transactional
 	public ResponseEntity<LivroDto> PublicarLivro(@RequestBody @Valid LivroForm form, UriComponentsBuilder UriBuilder) {
-		LivroModel lm = form.convert();
-		livrorepository.save(lm);
-
-		URI uri = UriBuilder.path("/livro/id").buildAndExpand(lm.getId()).toUri();
-		return ResponseEntity.created(uri).body(new LivroDto(lm));
+		LivroDto dto = service.gravar(form);
+		URI uri = UriBuilder.path("/livro/id").buildAndExpand(1).toUri();
+		return ResponseEntity.created(uri).body(dto);
 	}
 
+	
 	@GetMapping(produces = { "application/json" })
+	@Operation(summary = "Finds all books", description = "Finds all books",
+	tags = {"Book"},
+	responses = {
+		@ApiResponse(description = "Success", responseCode = "200",
+			content = {
+				@Content(
+					mediaType = "application/json",
+					array = @ArraySchema(schema = @Schema(implementation = LivroDto.class))
+				)
+			}),
+		@ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+		@ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+		@ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
+		@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
+	})
 	public List<LivroDto> BuscarLivro(Integer edicao) {
-		if (edicao == null) {
-			List<LivroModel> lm = livrorepository.findAll();
-			return LivroDto.convert(lm);
-		} else {
-			List<LivroModel> lm = livrorepository.findByEdicao(edicao);
-			return LivroDto.convert(lm);
-		}
+		List<LivroDto> dto = service.buscar(edicao);
+		return dto;
 	}
 
 	@PutMapping("/{id}")
+	@Operation(summary = "Updates a Book",
+	description = "Updates a Book by passing in a JSON, XML or YML representation of the Book!",
+	tags = {"Book"},
+	responses = {
+		@ApiResponse(description = "Updated", responseCode = "200",
+			content = @Content(schema = @Schema(implementation = LivroDto.class))
+		),
+		@ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+		@ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+		@ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
+		@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
+	}
+)
 	@Transactional
 	public ResponseEntity<LivroDto> AtualizarLivro(@RequestBody LivroForm form, @PathVariable Long id) {
 		Optional<LivroModel> op = livrorepository.findById(id);
-		if (op.isPresent()) {
-			LivroModel lm = form.atualizar(id, livrorepository);
-			return ResponseEntity.ok().build();
-		} else {
-			return ResponseEntity.notFound().build();
-		}
-	}
-
-	@DeleteMapping("/{id}")
-	@Transactional
-	public ResponseEntity<LivroDto> DeletarLivro(@PathVariable Long id) {
-		Optional<LivroModel> op = livrorepository.findById(id);
-		if (op.isPresent()) {
-			livrorepository.deleteById(id);
+		if(op.isPresent()) {
+			LivroModel model = form.atualizar(id, livrorepository);
 			return ResponseEntity.ok().build();
 		}
 		return ResponseEntity.notFound().build();
 	}
-}
+
+	@DeleteMapping("/{id}")
+	@Operation(summary = "Deletes a Book",
+	description = "Deletes a Book by passing in a JSON, XML or YML representation of the Book!",
+	tags = {"Book"},
+	responses = {
+		@ApiResponse(description = "No Content", responseCode = "204", content = @Content),
+		@ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+		@ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+		@ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
+		@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
+	}
+)
+	@Transactional
+	public ResponseEntity<LivroDto> DeletarLivro(@PathVariable Long id) {
+		Optional<LivroModel> op = livrorepository.findById(id);
+		ResponseEntity<LivroDto> dto = service.deletar(id, op);
+		return dto;
+}}

@@ -28,7 +28,7 @@ import br.com.guAmaLivro.repository.AutorRepository;
 import jakarta.transaction.Transactional;
 
 @RestController
-@RequestMapping("/autor")
+@RequestMapping("/api/autor/v1")
 public class AutorController {
 
 	@Autowired
