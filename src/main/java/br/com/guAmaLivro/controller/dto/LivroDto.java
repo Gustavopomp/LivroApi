@@ -24,6 +24,9 @@ public class LivroDto {
 		this.anoDePublicacao = lm.getAnoDePublicacao();
 	}
 
+	
+	public LivroDto() {
+	}
 	public static List<LivroDto> convert(List<LivroModel> lm) {
 		return lm.stream().map(LivroDto::new).collect(Collectors.toList());
 	}
