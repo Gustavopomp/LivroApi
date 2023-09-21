@@ -7,12 +7,14 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import br.com.guAmaLivro.controller.LIvroController;
 import br.com.guAmaLivro.controller.dto.LivroDto;
-import br.com.guAmaLivro.exception.ResourceNotFoundException;
 import br.com.guAmaLivro.mapper.DozerMapper;
 import br.com.guAmaLivro.model.LivroModel;
 import br.com.guAmaLivro.repository.LivroRepository;
+
 
 @Service
 public class LivroService {
@@ -22,10 +24,14 @@ public class LivroService {
 	@Autowired
 	LivroRepository livrorepository;
 
-	public LivroDto gravar(LivroDto livro) {
-		logger.info("Creating a Book!");
-		var entity = DozerMapper.parseObject(livro, LivroDto.class);
-		var dto = DozerMapper.parseObject(livrorepository.save(entity), LivroDto.class);
+	public LivroDto create(LivroDto form) {
+
+		if (form == null) throw new Exception();
+		
+		logger.info("Creating one book!");
+		var entity = DozerMapper.parseObject(form, LivroModel.class);
+		var dto =  DozerMapper.parseObject(livrorepository.save(entity), LivroDto.class);
+		dto.add(linkTo(methodOn(LIvroController.class).findById(dto.getKey())).withSelfRel());
 		return dto;
 	}
 
@@ -54,12 +60,12 @@ public class LivroService {
 		return ResponseEntity.notFound().build();
 	}
 
-public LivroDto update(LivroDto livro,LivroModel ml) {
+/*public LivroDto update(LivroDto livro,LivroModel ml) {
 	
 	logger.info("Updating a Book");
 	
 	var entity = livrorepository.findById(ml.getId()).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
 	var dto =  DozerMapper.parseObject(livrorepository.save(entity), LivroDto.class);
 	return dto;
-}
+}*/
 }
