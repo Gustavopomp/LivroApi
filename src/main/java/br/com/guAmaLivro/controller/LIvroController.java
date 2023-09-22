@@ -45,8 +45,13 @@ public class LIvroController {
 					@ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
 					@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content), })
 	@Transactional
+<<<<<<< HEAD
+	public LivroDto create(@RequestBody LivroForm form) {
+		return service.gravar(form);
+=======
 	public LivroDto create(@RequestBody LivroDto form) {
 		return service.create(form);
+>>>>>>> 8d0346da20e15d0bf5b887c5304da5f9ee3248f7
 	}
 
 	@GetMapping(produces = { "application/json" })

@@ -11,6 +11,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import br.com.guAmaLivro.controller.LIvroController;
 import br.com.guAmaLivro.controller.dto.LivroDto;
+<<<<<<< HEAD
+import br.com.guAmaLivro.exception.ResourceNotFoundException;
+import br.com.guAmaLivro.form.LivroForm;
+=======
+>>>>>>> 8d0346da20e15d0bf5b887c5304da5f9ee3248f7
 import br.com.guAmaLivro.mapper.DozerMapper;
 import br.com.guAmaLivro.model.LivroModel;
 import br.com.guAmaLivro.repository.LivroRepository;
@@ -24,6 +29,14 @@ public class LivroService {
 	@Autowired
 	LivroRepository livrorepository;
 
+<<<<<<< HEAD
+	public LivroDto gravar(LivroForm form) {
+		logger.info("Creating a Book!");
+		LivroModel lm = form.convert();
+		LivroDto livro = new LivroDto(lm);
+		livrorepository.save(livro);
+		return livro;
+=======
 	public LivroDto create(LivroDto form) {
 
 		if (form == null) throw new Exception();
@@ -40,10 +53,12 @@ public class LivroService {
 		logger.info("Finding all people!");
 
 		return DozerMapper.parseListObjects(livrorepository.findAll(), LivroDto.class);
+>>>>>>> 8d0346da20e15d0bf5b887c5304da5f9ee3248f7
 	}
 
+	
 	public List<LivroDto> buscar(Integer edicao) {
-		if (edicao == null) {
+	if (edicao == null) {
 			List<LivroModel> lm = livrorepository.findAll();
 			return LivroDto.convert(lm);
 		} else {

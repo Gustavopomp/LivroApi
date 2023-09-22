@@ -10,15 +10,18 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 
 @Entity
 @Table(name = "books")
 @Data
 @AllArgsConstructor
+<<<<<<< HEAD
+public class LivroModel {
+=======
 @NoArgsConstructor
 public class LivroModel implements Serializable {
+>>>>>>> 8d0346da20e15d0bf5b887c5304da5f9ee3248f7
 
 	private static final long serialVersionUID = 1L;
 	

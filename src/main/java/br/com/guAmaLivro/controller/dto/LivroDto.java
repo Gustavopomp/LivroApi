@@ -33,7 +33,11 @@ public class LivroDto {
 
 	public LivroDto() {
 	}
+<<<<<<< HEAD
+	
+=======
 
+>>>>>>> 8d0346da20e15d0bf5b887c5304da5f9ee3248f7
 	public static List<LivroDto> convert(List<LivroModel> lm) {
 		return lm.stream().map(LivroDto::new).collect(Collectors.toList());
 	}
