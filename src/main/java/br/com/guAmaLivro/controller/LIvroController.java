@@ -1,6 +1,5 @@
 package br.com.guAmaLivro.controller;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
-
 import br.com.guAmaLivro.controller.dto.LivroDto;
 import br.com.guAmaLivro.form.LivroForm;
 import br.com.guAmaLivro.model.LivroModel;
@@ -27,7 +24,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/livro/v1")
@@ -45,13 +41,9 @@ public class LIvroController {
 					@ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
 					@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content), })
 	@Transactional
-<<<<<<< HEAD
+
 	public LivroDto create(@RequestBody LivroForm form) {
 		return service.gravar(form);
-=======
-	public LivroDto create(@RequestBody LivroDto form) {
-		return service.create(form);
->>>>>>> 8d0346da20e15d0bf5b887c5304da5f9ee3248f7
 	}
 
 	@GetMapping(produces = { "application/json" })
@@ -76,11 +68,9 @@ public class LIvroController {
 					@ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
 					@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content), })
 	@Transactional
-	public LivroDto AtualizarLivro(@PathVariable Long id) {
-		LivroModel ml = new LivroModel();
-		LivroDto livro = new LivroDto(ml);
-		LivroDto retorno = service.update(livro, ml);
-		return retorno;
+	public ResponseEntity<LivroDto> AtualizarLivro(@PathVariable Long id, @RequestBody LivroForm form) {
+		ResponseEntity<LivroDto> dto = service.update(form, id);
+		return dto;
 	}
 
 	@DeleteMapping("/{id}")
@@ -92,8 +82,7 @@ public class LIvroController {
 					@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content), })
 	@Transactional
 	public ResponseEntity<LivroDto> DeletarLivro(@PathVariable Long id) {
-		Optional<LivroModel> op = livrorepository.findById(id);
-		ResponseEntity<LivroDto> dto = service.deletar(id, op);
+		ResponseEntity<LivroDto> dto = service.deletar(id);
 		return dto;
 	}
 }
